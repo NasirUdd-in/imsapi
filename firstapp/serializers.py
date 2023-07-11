@@ -11,28 +11,21 @@ from django.contrib.auth.hashers import make_password
 # Register serializer
 # Register serializer
 class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'first_name', 'last_name')
-        extra_kwargs = {
-            'password': {'write_only': True},
-        }
 
     def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            password=validated_data['password'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
-        )
+        validated_data['password'] = make_password(validated_data['password'])
+        user = User.objects.create(**validated_data)
         return user
 
 
-# User serializer
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
+class UserSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(max_length=128, write_only=True)
 
 
 class CategorySerializer(serializers.ModelSerializer):
