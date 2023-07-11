@@ -26,6 +26,11 @@ SECRET_KEY = "django-insecure-4$ngmo0(%eqdy6vjlvmxaa7!_(fn(thrh-dp)scjs7!u0=cu)z
 DEBUG = True
 
 ALLOWED_HOSTS = []
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+     ],
+}
 
 
 # Application definition
@@ -38,7 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "firstapp",
-    "rest_framework"
+    "rest_framework",
+    'rest_framework_swagger',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
